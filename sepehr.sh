@@ -15,7 +15,10 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Prompt for the password for the user 'sepehr'
-read -sp "Enter password for user 'sepehr': " password
+log "Enter password for user 'sepehr':"
+stty -echo
+read password
+stty echo
 echo
 
 # Check if the user 'sepehr' already exists
