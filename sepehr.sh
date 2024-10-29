@@ -74,12 +74,7 @@ echo "Finished: Clone powerlevel10k theme"
 
 echo "Starting: Update .zshrc to include the new plugins"
 # Update .zshrc to include the new plugins
-sed -i '/^plugins=(git/ c\plugins=(git zsh-autosuggestions zsh-syntax-highlighting)' /home/sepehr/.zshrc
-echo "Finished: Update .zshrc to include the new plugins"
-
-echo "Starting: Update .zshrc to set the ZSH_THEME to powerlevel10k"
-# Update .zshrc to set the ZSH_THEME to powerlevel10k
-sed -i 's/^ZSH_THEME=.*/ZSH_THEME="powerlevel10k\/powerlevel10k"/' /home/sepehr/.zshrc
+wget -O /home/sepehr/.zshrc https://raw.githubusercontent.com/sepehrraisi/sepuntu/main/.zshrc
 echo "Finished: Update .zshrc to set the ZSH_THEME to powerlevel10k"
 
 echo "Starting: Copy and replace the .p10k.zsh file"
