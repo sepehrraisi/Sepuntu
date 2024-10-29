@@ -6,14 +6,16 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
-echo "Starting: Update package lists"
-# Update package lists
-apt update
-echo "Finished: Update package lists"
+
 
 # Prompt for the password for the new user
 read -sp "Enter password for new user 'sepehr': " password
 echo
+
+echo "Starting: Update package lists"
+# Update package lists
+apt update
+echo "Finished: Update package lists"
 
 echo "Starting: Create the user 'sepehr'"
 # Create the user 'sepehr'
