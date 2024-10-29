@@ -147,6 +147,8 @@ if [ "$project_type" == "1" ]; then
     read project_name
     log "Enter the GitHub link of the new project:"
     read github_link
+    log "Cloning the repository from $github_link into /home/sepehr/$project_name"
+    sudo -u sepehr git clone "$github_link" "/home/sepehr/$project_name"
     create_postgres_db "$project_name"
 elif [ "$project_type" == "2" ]; then
     log "Do you want to create a PostgreSQL database? (1 for yes, 2 for no)"
