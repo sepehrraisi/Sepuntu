@@ -114,18 +114,21 @@ if [ ${#missing_packages[@]} -ne 0 ]; then
 else
     log "All required packages are already installed."
 fi
-
 # Start and enable services if installed
 if dpkg -l | grep -q "nginx"; then
-    start_and_enable_service "nginx"
-    # Open nginx ports
-    log "Opening nginx ports 80 and 443"
-    sudo ufw allow 'Nginx Full'
-    sudo ufw reload
+    if ! systemctl is-enabled --quiet nginx; then
+        start_and_enable_service "nginx"
+        # Open nginx ports
+        log "Opening nginx ports 80 and 443"
+        sudo ufw allow 'Nginx Full'
+        sudo ufw reload
+    fi
 fi
 
 if dpkg -l | grep -q "postgresql"; then
-    start_and_enable_service "postgresql"
+    if ! systemctl is-enabled --quiet postgresql; then
+        start_and_enable_service "postgresql"
+    fi
 fi
 
 # Ask if the project is new or existing
