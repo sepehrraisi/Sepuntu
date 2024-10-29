@@ -30,6 +30,7 @@ CREATE DATABASE $db_name;
 GRANT ALL PRIVILEGES ON DATABASE $db_name TO $db_user;
 EOF
 
+    # Store the database credentials in the home directory
     store_db_credentials "$project_name" "$db_name" "$db_user" "$db_password"
 }
 
@@ -40,17 +41,14 @@ store_db_credentials() {
     local db_user=$3
     local db_password=$4
 
-    # Store credentials in a temporary file
-    local temp_credentials_file="/tmp/${project_name}.txt"
-    log "Storing database credentials temporarily in $temp_credentials_file"
+    # Define the path to the credentials file in the home directory
+    local credentials_file="$HOME/${project_name}_credentials.txt"
+    log "Storing database credentials in $credentials_file"
     {
         echo "Database Name: $db_name"
         echo "Database User: $db_user"
         echo "Database Password: $db_password"
-    } > "$temp_credentials_file"
-
-    # Move the credentials file to the user's home directory
-    mv "$temp_credentials_file" ~/${project_name}.txt
+    } > "$credentials_file"
 }
 
 # Function to check and install a package if not installed
