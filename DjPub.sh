@@ -22,6 +22,8 @@ create_postgres_db() {
     local db_password=$(openssl rand -base64 12)
 
     log "Creating PostgreSQL user and database"
+    # Change to a directory accessible by the postgres user
+    cd /tmp
     sudo -u postgres psql <<EOF
 CREATE USER $db_user WITH PASSWORD '$db_password';
 CREATE DATABASE $db_name;
@@ -38,12 +40,17 @@ store_db_credentials() {
     local db_user=$3
     local db_password=$4
 
-    log "Storing database credentials in ~/${project_name}.txt"
+    # Store credentials in a temporary file
+    local temp_credentials_file="/tmp/${project_name}.txt"
+    log "Storing database credentials temporarily in $temp_credentials_file"
     {
         echo "Database Name: $db_name"
         echo "Database User: $db_user"
         echo "Database Password: $db_password"
-    } > ~/${project_name}.txt
+    } > "$temp_credentials_file"
+
+    # Move the credentials file to the user's home directory
+    mv "$temp_credentials_file" ~/${project_name}.txt
 }
 
 # Function to check and install a package if not installed
@@ -106,6 +113,10 @@ fi
 # Start and enable services if installed
 if dpkg -l | grep -q "nginx"; then
     start_and_enable_service "nginx"
+    # Open nginx ports
+    log "Opening nginx ports 80 and 443"
+    sudo ufw allow 'Nginx Full'
+    sudo ufw reload
 fi
 
 if dpkg -l | grep -q "postgresql"; then
@@ -141,9 +152,6 @@ elif [ "$project_type" == "2" ]; then
     fi
 fi
 
-# Open nginx ports
-log "Opening nginx ports 80 and 443"
-sudo ufw allow 'Nginx Full'
-sudo ufw reload
+
 
 
