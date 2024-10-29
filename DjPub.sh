@@ -41,8 +41,9 @@ store_db_credentials() {
     local db_user=$3
     local db_password=$4
 
-    # Define the path to the credentials file in the home directory
-    local credentials_file="$HOME/${project_name}_credentials.txt"
+    # Use SUDO_USER to get the original user's home directory
+    local user_home=$(eval echo "~$SUDO_USER")
+    local credentials_file="$user_home/${project_name}_credentials.txt"
     log "Storing database credentials in $credentials_file"
     {
         echo "Database Name: $db_name"
