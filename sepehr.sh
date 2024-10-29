@@ -82,8 +82,7 @@ echo "Finished: Update .zshrc to set the ZSH_THEME to powerlevel10k"
 
 echo "Starting: Copy and replace the .p10k.zsh file"
 # Copy and replace the .p10k.zsh file
-cp ./.p10k.zsh /home/sepehr/.p10k.zsh
-echo "Finished: Copy and replace the .p10k.zsh file"
+wget -O /home/sepehr/.p10k.zsh https://raw.githubusercontent.com/sepehrraisi/sepuntu/main/.p10k.zsh
 
 echo "Starting: Ensure the correct ownership and permissions"
 # Ensure the correct ownership and permissions
