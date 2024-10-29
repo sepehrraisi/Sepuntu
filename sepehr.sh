@@ -22,15 +22,20 @@ stty echo
 echo
 
 # Check if the user 'sepehr' already exists
-if id "sepehr" &>/dev/null; then
+if getent passwd "sepehr" > /dev/null 2>&1; then
     log "User 'sepehr' already exists. Setting new password."
     echo "sepehr:$password" | chpasswd
 else
     log "Creating user 'sepehr'."
-    useradd -m -s /bin/bash sepehr
-    echo "sepehr:$password" | chpasswd
-    usermod -aG sudo sepehr
-    echo "sepehr ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/sepehr
+    if useradd -m -s /bin/bash sepehr; then
+        log "User 'sepehr' created successfully."
+        echo "sepehr:$password" | chpasswd
+        usermod -aG sudo sepehr
+        echo "sepehr ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/sepehr
+    else
+        log "Failed to create user 'sepehr'."
+        exit 1
+    fi
 fi
 
 # Function to install packages
